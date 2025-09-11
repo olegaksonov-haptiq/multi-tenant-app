@@ -1,0 +1,17 @@
+{
+  "id": "venu",
+  "displayName": "Venu Plus",
+  "theme": {
+    "primary": "#228B22",
+    "accent": "#FFD700",
+    "fontFamily": "Georgia, serif"
+  },
+  "features": {
+    "advancedReports": true,
+    "liveOdds": false
+  },
+  "layout": "navbar",
+  "branding": {
+    "logo": "/tenants/assets/venuplus.svg"
+  }
+}

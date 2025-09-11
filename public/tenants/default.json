@@ -1,0 +1,17 @@
+{
+  "id": "default",
+  "displayName": "Default App",
+  "theme": {
+    "primary": "#19345E",
+    "accent": "#FFB100",
+    "fontFamily": "Inter, system-ui, sans-serif"
+  },
+  "features": {
+    "advancedReports": false,
+    "liveOdds": false
+  },
+  "layout": "navbar",
+  "branding": {
+    "logo": "/tenants/assets/vite.svg"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "drf",
+  "displayName": "DRF Racing",
+  "theme": {
+    "primary": "#0066CC",
+    "accent": "#FF3333",
+    "fontFamily": "Arial, sans-serif"
+  },
+  "features": {
+    "advancedReports": true,
+    "liveOdds": true
+  },
+  "layout": "both",
+  "branding": {
+    "logo": "/tenants/assets/drf.svg"
+  }
+}
