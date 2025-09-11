@@ -7,7 +7,7 @@ import '../../styles/theme.scss';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { tenant } = useTenant();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const hasSidebar = tenant?.layout === 'sidebar' || tenant?.layout === 'both';
   const hasNavbar = tenant?.layout === 'navbar' || tenant?.layout === 'both';
