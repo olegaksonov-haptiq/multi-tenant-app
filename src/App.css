@@ -1,7 +1,0 @@
-:root {
-  --primary: #19345E; /* defaults */
-  --accent: #FFB100;
-  --font-family: system-ui;
-}
-body { font-family: var(--font-family); }
-.button { background: var(--primary); }

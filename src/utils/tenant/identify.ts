@@ -1,13 +1,41 @@
-export function getTenantIdFromLocation(): string {
+/**
+ * Gets the tenant ID from the current window location.
+ *
+ * Rules:
+ * - For production/dev/stage subdomains: tenant is derived from the subdomain, stripping environment suffix (-dev, -stage).
+ * - For localhost:
+ *   - If path contains a tenant (e.g., http://localhost:5173/drf), use that.
+ *   - Otherwise, fallback to 'dafault'.
+ * - For local subdomains ending with 'local' (e.g., drflocal.drf.com), remove 'local' suffix.
+ *
+ * @example
+ * // On https://drf-dev.haptiq.com → returns "drf"
+ * // On https://drf-stage.haptiq.com → returns "drf"
+ * // On https://drf.haptiq.com → returns "drf"
+ * // On http://tenantlocal.drf.com:8080 → returns "drf"
+ * // On http://tenantlocal.gemini.com:8080 → returns "gemini"
+ * // On http://localhost:5173/drf → returns "drf"
+ * // On http://localhost:5173 → returns "dafault"
+ *
+ * @returns {string} Tenant ID
+ */
+export const getTenantIdFromHost = (): string => {
   const host = window.location.hostname;
-  const subdomain = host.split('.')[0];
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
 
-  // Subdomain approach: drf.example.com
-  if (subdomain && subdomain !== 'www' && subdomain !== 'localhost') {
-    return subdomain;
+  // Localhost
+  if (host === 'localhost') {
+    return pathParts[0] || 'default';
   }
 
-  // Path-based approach: example.com/drf/...
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
-  return pathParts[0] || 'default';
-}
+  // Tenant-local subdomains: tenantlocal.drf.com → drf
+  if (host.startsWith('tenantlocal.')) {
+    return host.split('.')[1] || 'default'; // e.g., tenantlocal.drf.com → drf
+  }
+
+  // Normal subdomains
+  const subdomain = host.split('.')[0]; // e.g., gemini-dev
+  const cleanedSubdomain = subdomain.replace(/-(dev|stage)$/i, ''); // remove environment suffix
+
+  return cleanedSubdomain;
+};

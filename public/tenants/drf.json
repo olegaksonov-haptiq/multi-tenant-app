@@ -8,7 +8,7 @@
   },
   "features": {
     "advancedReports": true,
-    "liveOdds": true
+    "reportCharts": true
   },
   "layout": "both",
   "branding": {

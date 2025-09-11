@@ -1,45 +1,59 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { getTenantIdFromLocation } from "./identify";
+import React, { useEffect, useState, type ReactNode } from 'react';
+import type { TenantConfig } from '../../interfaces/TenantConfig';
+import { getTenantIdFromHost } from './identify';
+import { TenantContext } from './tenantContext';
 
-export interface TenantConfig {
-  id: string;
-  displayName: string;
-  theme: Record<string, string>;
-  branding?: {
-    logo?: string;
-  };
-  layout?: "navbar" | "sidebar" | "both";
-  features: {
-    advancedReports: boolean;
-    liveOdds: boolean;
-  };
-  footerText?: string; // ✅ optional custom footer override
-}
+type TenantProviderProps = {
+  children: ReactNode;
+};
 
-
-type TenantContextValue = { tenant?: TenantConfig; loading: boolean };
-
-const TenantContext = createContext<TenantContextValue>({ loading: true });
-
-export const useTenant = () => useContext(TenantContext);
-
-export const TenantProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const TenantProvider: React.FC<TenantProviderProps> = ({ children }) => {
   const [tenant, setTenant] = useState<TenantConfig>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const id = getTenantIdFromLocation();
-    fetch(`/tenants/${id}.json`)
-      .then((r) => (r.ok ? r.json() : fetch("/tenants/default.json").then((r) => r.json())))
-      .then((cfg: TenantConfig) => setTenant(cfg))
-      .finally(() => setLoading(false));
+    const id = getTenantIdFromHost();
+
+    const loadTenant = async () => {
+      try {
+        const response = await fetch(`/tenants/${id}.json`);
+        if (!response.ok) throw new Error('Not found');
+
+        const text = await response.text();
+
+        try {
+          const cfg: TenantConfig = JSON.parse(text);
+          setTenant(cfg);
+        } catch {
+          console.warn(`Invalid JSON for tenant "${id}", falling back to default.`);
+          await loadDefaultTenant();
+        }
+      } catch {
+        console.warn(`Error loading tenant "${id}", falling back to default.`);
+        await loadDefaultTenant();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const loadDefaultTenant = async () => {
+      try {
+        const res = await fetch('/tenants/default.json');
+        const cfg: TenantConfig = await res.json();
+        setTenant(cfg);
+      } catch {
+        console.error('Failed to load default tenant config.');
+        setTenant({
+          id: 'default',
+          displayName: 'Default Tenant',
+          theme: { primary: '#19345E', secondary: '#FFFFFF' },
+          features: { advancedReports: false, reportCharts: false },
+        });
+      }
+    };
+
+    loadTenant();
   }, []);
 
-  return (
-    <TenantContext.Provider value={{ tenant, loading }}>
-      {children}
-    </TenantContext.Provider>
-  );
+  return <TenantContext.Provider value={{ tenant, loading }}>{children}</TenantContext.Provider>;
 };

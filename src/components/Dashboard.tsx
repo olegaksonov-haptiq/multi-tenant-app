@@ -1,8 +1,9 @@
-import React, { Suspense, lazy } from "react";
-import "../styles/theme.scss";
-import { useTenant } from "../utils/tenant/TenantProvider";
+import React, { Suspense, lazy } from 'react';
+import { useTenant } from '../utils/tenant/tenantContext';
+import '../styles/theme.scss';
+import { UserList } from './UserList';
 
-const AdvancedReports = lazy(() => import("./AdvancedReports"));
+const AdvancedReports = lazy(() => import('./AdvancedReports'));
 
 export const Dashboard: React.FC = () => {
   const { tenant } = useTenant();
@@ -23,12 +24,8 @@ export const Dashboard: React.FC = () => {
         </div>
 
         <div className="card">
-          <h3>⚡ Data Analysis</h3>
-          {tenant?.features?.liveOdds ? (
-            <p>Data analysis are enabled for your account.</p>
-          ) : (
-            <p>Upgrade to enable live odds.</p>
-          )}
+          <h3>⚡ Data</h3>
+          {tenant?.features?.reportCharts ? <p>Data are enabled for your account.</p> : <p>Upgrade to enable Data.</p>}
         </div>
 
         <div className="card">
@@ -37,6 +34,7 @@ export const Dashboard: React.FC = () => {
           <button className="button">Sample button</button>
         </div>
       </div>
+      <UserList />
     </div>
   );
 };

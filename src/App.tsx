@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import Layout from "./components/layout/Layout";
-import Dashboard from "./components/Dashboard";
-import { useTenant } from "./utils/tenant/TenantProvider";
-import { applyTheme } from "./utils/tenant/applyTheme";
+import React, { useEffect } from 'react';
+import { useTenant } from './utils/tenant/tenantContext';
+import Dashboard from './components/Dashboard';
+import { applyTheme } from './utils/tenant/applyTheme';
+import Layout from './components/layout/Layout';
 
 const App: React.FC = () => {
   const { tenant, loading } = useTenant();

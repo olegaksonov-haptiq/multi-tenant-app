@@ -17,7 +17,7 @@ It allows multiple clients (tenants) to use the same codebase but with **isolate
   - 🎨 Themes via CSS variables (`--primary`, `--accent`)  
   - 🖼 Logos & names  
   - ⚙️ Layouts (`navbar`, `sidebar`, `both`)  
-  - ✨ Features (`advancedReports`, `liveOdds`, etc.)  
+  - ✨ Features (`Reports`, `Pie Charts`, etc.)  
 
 - **Scalable**  
   Single codebase serves multiple clients.
@@ -44,7 +44,7 @@ Before running the app, make sure you have:
 
 ### 1. Clone the repo
 ```bash
-git clone https://github.com/your-org/multi-tenant-react-app.git
+git clone https://github.com/vishwajit-haptiq/multi-tenant-app.git
 cd multi-tenant-react-app
 ````
 
@@ -94,7 +94,7 @@ export interface TenantConfig {
   layout?: "navbar" | "sidebar" | "both";
   features: {
     advancedReports: boolean;
-    liveOdds: boolean;
+    reportCharts: boolean;
   };
   footerText?: string; // Optional footer override
 }
@@ -112,7 +112,7 @@ const tenant: TenantConfig = {
   layout: "both",
   features: {
     advancedReports: true,
-    liveOdds: false
+    reportCharts: false
   },
   footerText: "Powered by Client A Technologies"
 };

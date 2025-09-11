@@ -1,6 +1,6 @@
-import React from "react";
-import { useTenant } from "../../utils/tenant/TenantProvider";
-import "../../styles/theme.scss";
+import React from 'react';
+import { useTenant } from '../../utils/tenant/tenantContext';
+import '../../styles/theme.scss';
 
 interface NavbarProps {
   onMenuClick?: () => void;
@@ -18,9 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenuButton }) =
             ☰
           </button>
         )}
-        {tenant?.branding?.logo && (
-          <img src={tenant.branding.logo} alt="logo" className="navbar-logo" />
-        )}
+        {tenant?.branding?.logo && <img src={tenant.branding.logo} alt="logo" className="navbar-logo" />}
       </div>
       <div className="navbar-links">
         <a href="#">Home</a>
