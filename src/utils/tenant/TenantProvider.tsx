@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type ReactNode } from 'react';
-import type { TenantConfig } from '../../interfaces/TenantConfig';
+import type { TenantConfig } from '../../types/tenant';
 import { getTenantIdFromHost } from './identify';
 import { TenantContext } from './tenantContext';
 
