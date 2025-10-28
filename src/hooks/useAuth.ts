@@ -53,17 +53,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     void initializeAuth();
   }, []);
 
-  // useEffect(() => {
-  //   // React to tenant changes by logging out if tenant mismatch
-  //   if (!authState.user) return;
-
-  //   if (tenant && authState.user.tenantId !== tenant.id) {
-  //     console.log('tenant mismatch', tenant, authState.user);
-  //     sessionStorage.clearToken();
-  //     void logout();
-  //   }
-  // }, [tenant, authState.user]);
-
   const login = async (credentials: LoginCredentials) => {
     setAuthState((prev) => ({ ...prev, isLoading: true, error: null }));
 
