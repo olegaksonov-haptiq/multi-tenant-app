@@ -12,12 +12,16 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\""
   },
   "dependencies": {
+    "@types/react-router-dom": "^5.3.3",
+    "js-cookie": "^3.0.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.4",
     "sass": "^1.92.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",

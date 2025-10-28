@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import type { TenantConfig } from '../../interfaces/TenantConfig';
+import type { TenantConfig } from '../../types/tenant';
 
 type TenantContextValue = { tenant?: TenantConfig; loading: boolean };
 
