@@ -81,7 +81,7 @@ npm run preview
 
 The app now uses a centralized Axios client that automatically adds tenant and security headers to every request.
 
-- `src/services/apiClient.ts` – configures Axios, injects `Authorization`, `X-Tenant-Id`, and a `X-Request-Id`, and normalizes errors into a consistent `ApiError`.
+- `src/services/apiClient.ts` – configures Axios, injects `Authorization`, `X-Tenant-Id` and normalizes errors into a consistent `ApiError`.
 - `src/services/api.ts` – lightweight helpers (`api.get`, `api.post`, etc.) that return deserialized data.
 
 ### Example usage

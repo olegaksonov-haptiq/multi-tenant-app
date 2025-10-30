@@ -38,12 +38,11 @@ describe('apiClient', () => {
   });
 
   it('injects tenant and auth headers before the request is sent', async () => {
-    expect.assertions(4);
+    expect.assertions(3);
 
     mock.onGet('/users').reply((config) => {
       expect(config.headers?.['X-Tenant-Id']).toBe('tenant-abc');
       expect(config.headers?.Authorization).toBe('Bearer token-123');
-      expect(config.headers?.['X-Request-Id']).toBeTruthy();
       expect(config.headers?.['Content-Type']).toBe('application/json');
       return [200, []];
     });

@@ -27,14 +27,6 @@ export class ApiError extends Error {
   }
 }
 
-const generateRequestId = (): string => {
-  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-    return crypto.randomUUID();
-  }
-
-  return Math.random().toString(36).slice(2);
-};
-
 const applyHeader = (config: InternalAxiosRequestConfig, key: string, value?: string | null) => {
   if (!value) return;
 
@@ -88,7 +80,6 @@ apiClient.interceptors.request.use((config) => {
   const tenantId = storedUser?.tenantId ?? getTenantIdFromHost();
 
   applyHeader(config, 'X-Tenant-Id', tenantId);
-  applyHeader(config, 'X-Request-Id', generateRequestId());
 
   if (token) {
     applyHeader(config, 'Authorization', `Bearer ${token}`);
