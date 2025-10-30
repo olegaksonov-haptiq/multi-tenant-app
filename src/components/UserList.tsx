@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api } from '../utils/api-request';
+import { ApiError, api } from '../services/api';
 
 interface User {
   id: string;
@@ -17,7 +17,7 @@ export const UserList = () => {
         const data = await api.get<User[]>('/users');
         setUsers(data);
       } catch (err: unknown) {
-        if (err instanceof Error) {
+        if (err instanceof ApiError || err instanceof Error) {
           setError(err.message);
         } else {
           setError('An unexpected error occurred');
