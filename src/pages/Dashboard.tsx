@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useTenant } from '../utils/tenant/tenantContext';
+import { useAuth } from '../store/auth/hooks';
+import { useTenant } from '../store/tenant/hooks';
 import { UserList } from '../components/UserList';
 
 const Dashboard: React.FC = () => {

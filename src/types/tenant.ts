@@ -10,3 +10,9 @@ export interface TenantConfig {
   };
   footerText?: string;
 }
+
+export interface TenantState {
+  tenant?: TenantConfig;
+  loading: boolean;
+  error: string | null;
+}

@@ -11,6 +11,8 @@ export interface User {
   updatedAt: Date;
 }
 
+export type UserSummary = Pick<User, 'id' | 'name'>;
+
 export interface AuthState {
   user: User | null;
   token: string | null;

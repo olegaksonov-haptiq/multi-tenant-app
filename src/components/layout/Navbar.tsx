@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTenant } from '../../utils/tenant/tenantContext';
-import { useAuth } from '../../hooks/useAuth';
+import { useTenant } from '../../store/tenant/hooks';
+import { useAuth } from '../../store/auth/hooks';
 import { navigationConfig } from '../../routes/routes';
 import '../../styles/theme.scss';
 

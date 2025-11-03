@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { useTenant } from '../utils/tenant/tenantContext';
+import { useTenant } from '../store/tenant/hooks';
 import '../styles/theme.scss';
 import { UserList } from './UserList';
 

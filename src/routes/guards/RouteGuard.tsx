@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useTenant } from '../../utils/tenant/tenantContext';
-import { useAuth } from '../../hooks/useAuth';
+import { useTenant } from '../../store/tenant/hooks';
+import { useAuth } from '../../store/auth/hooks';
 import type { RouteConfig } from '../../types/routes';
 
 interface RouteGuardProps {

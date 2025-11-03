@@ -1,20 +1,16 @@
 import { useEffect, useState } from 'react';
 import { ApiError, api } from '../services/api';
-
-interface User {
-  id: string;
-  name: string;
-}
+import type { UserSummary } from '../types/auth';
 
 export const UserList = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserSummary[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const data = await api.get<User[]>('/users');
+        const data = await api.get<UserSummary[]>('/users');
         setUsers(data);
       } catch (err: unknown) {
         if (err instanceof ApiError || err instanceof Error) {
