@@ -2,8 +2,8 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { routes, defaultRoutes } from './routes';
 import RouteGuard from './guards/RouteGuard';
-import { useAuth } from '../hooks/useAuth';
-import { useTenant } from '../utils/tenant/tenantContext';
+import { useAuth } from '../store/auth/hooks';
+import { useTenant } from '../store/tenant/hooks';
 
 const Router: React.FC = () => {
   const { isAuthenticated, isLoading } = useAuth();

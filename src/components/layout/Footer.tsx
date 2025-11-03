@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTenant } from '../../utils/tenant/tenantContext';
+import { useTenant } from '../../store/tenant/hooks';
 
 export const Footer: React.FC = () => {
   const { tenant } = useTenant();

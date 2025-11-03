@@ -1,6 +1,5 @@
 import { getTenantIdFromHost } from './tenant/identify';
-
-export type EnvType = 'localhost' | 'dev' | 'stage' | 'prod';
+import type { EnvType } from '../types/env';
 
 /**
  * Figures out the environment based on hostname.

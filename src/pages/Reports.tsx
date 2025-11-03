@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { useTenant } from '../utils/tenant/tenantContext';
+import { useTenant } from '../store/tenant/hooks';
 
 const AdvancedReports = lazy(() => import('../components/AdvancedReports'));
 

@@ -1,13 +1,22 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { useTenant } from './utils/tenant/tenantContext';
-import { applyTheme } from './utils/tenant/applyTheme';
+
 import Layout from './components/layout/Layout';
 import Router from './routes/Router';
-import { AuthProvider } from './hooks/useAuth';
+import { initializeAuth } from './store/auth/authSlice';
+import { useAppDispatch } from './store/hooks';
+import { useTenant } from './store/tenant/hooks';
+import { loadTenant } from './store/tenant/tenantSlice';
+import { applyTheme } from './utils/tenant/applyTheme';
 
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { tenant, loading } = useTenant();
+
+  useEffect(() => {
+    void dispatch(loadTenant());
+    void dispatch(initializeAuth());
+  }, [dispatch]);
 
   useEffect(() => {
     if (tenant?.theme) {
@@ -19,11 +28,9 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Layout>
-          <Router />
-        </Layout>
-      </AuthProvider>
+      <Layout>
+        <Router />
+      </Layout>
     </BrowserRouter>
   );
 };
