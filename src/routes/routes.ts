@@ -1,6 +1,7 @@
-import type { RouteConfig } from '../types/routes';
+import type { NavigationItem, RouteConfig } from '../types/routes';
 import Dashboard from '../pages/Dashboard';
 import Reports from '../pages/Reports';
+import AdminPanel from '../pages/AdminPanel';
 import Login from '../pages/Login';
 import { NotFound, Unauthorized, FeatureUnavailable } from '../pages/ErrorPages';
 
@@ -38,6 +39,17 @@ export const routes: RouteConfig[] = [
     roles: ['user', 'admin'],
     meta: {
       description: 'View reports and analytics',
+    },
+  },
+  {
+    path: '/admin-panel',
+    component: AdminPanel,
+    exact: true,
+    requiresAuth: true,
+    title: 'Admin Panel',
+    roles: ['admin'],
+    meta: {
+      description: 'Admin panel for tenant management',
     },
   },
 
@@ -78,7 +90,7 @@ export const routes: RouteConfig[] = [
 ];
 
 // Navigation configuration
-export const navigationConfig = [
+export const navigationConfig: NavigationItem[] = [
   {
     label: 'Dashboard',
     path: '/dashboard',
@@ -92,6 +104,13 @@ export const navigationConfig = [
     requiresAuth: true,
     requiresFeature: 'advancedReports',
     roles: ['user', 'admin'],
+  },
+  {
+    label: 'Admin Panel',
+    path: '/admin-panel',
+    icon: '📊',
+    requiresAuth: true,
+    roles: ['admin'],
   },
 ];
 

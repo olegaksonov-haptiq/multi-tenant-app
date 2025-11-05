@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { routes, defaultRoutes } from './routes';
-import RouteGuard from './guards/RouteGuard';
+import GuardedRoute from './guards/GuardedRoute';
 import { useAuth } from '../store/auth/hooks';
 import { useTenant } from '../store/tenant/hooks';
 
@@ -35,9 +35,9 @@ const Router: React.FC = () => {
             key={route.path}
             path={route.path}
             element={
-              <RouteGuard route={route}>
+              <GuardedRoute route={route}>
                 <route.component />
-              </RouteGuard>
+              </GuardedRoute>
             }
           />
         );

@@ -21,8 +21,8 @@ const mockUsers: User[] = [
   {
     id: '2',
     email: 'tenant-drf-user@example.com',
-    name: 'DRF Admin',
-    roles: ['admin'],
+    name: 'DRF User',
+    roles: ['user'],
     permissions: ['read', 'write'],
     tenantId: 'drf',
     isActive: true,
