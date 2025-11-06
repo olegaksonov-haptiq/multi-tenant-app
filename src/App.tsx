@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import Layout from './components/layout/Layout';
@@ -11,7 +11,7 @@ import { applyTheme } from './utils/tenant/applyTheme';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { tenant, loading } = useTenant();
+  const { tenant } = useTenant();
 
   useEffect(() => {
     void dispatch(loadTenant());
@@ -24,13 +24,13 @@ const App: React.FC = () => {
     }
   }, [tenant]);
 
-  if (loading) return <div>Loading tenant...</div>;
-
   return (
     <BrowserRouter>
-      <Layout>
-        <Router />
-      </Layout>
+      <Suspense fallback={<></>}>
+        <Layout>
+          <Router />
+        </Layout>
+      </Suspense>
     </BrowserRouter>
   );
 };

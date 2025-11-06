@@ -24,8 +24,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onMenuClick, showMenuButton }) =
   const filteredNavItems = navigationConfig.filter((item) => {
     if (item.requiresAuth && !user) return false;
     if (item.requiresFeature && !hasFeature(item.requiresFeature)) return false;
-    if (item.roles && item.roles.length > 0 && user) {
+    if (item.roles && item.roles.length > 0) {
+      if (!user) return false;
       return item.roles.some((role) => user.roles.includes(role));
+    }
+    if (item.requiresPermissions && item.requiresPermissions.length > 0) {
+      if (!user) return false;
+      return item.requiresPermissions.some((permission) => user.permissions.includes(permission));
     }
     return true;
   });

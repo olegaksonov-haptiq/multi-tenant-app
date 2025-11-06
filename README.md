@@ -108,6 +108,19 @@ The tests live under `src/services/__tests__` and validate that tenant and auth 
 
 ---
 
+## 🛡️ Route Guarding
+
+Routes are protected through a single `GuardedRoute` component located at `src/routes/guards/GuardedRoute.tsx`. It applies composable policies for:
+
+- Authentication (`requiresAuth`)
+- Tenant isolation (enabled by default, disable with `allowTenantMismatch`)
+- Role and permission checks (`roles`, `requiresPermissions`)
+- Feature flags (`requiresFeature`)
+
+Extend behaviour by supplying additional policies via the component’s `policies` prop or by providing a `fallback` element for unauthorized cases. All routes in `src/routes/routes.ts` now consume this guard
+
+---
+
 ## 🛠️ Tenant Configuration
 
 Each tenant is defined in a **config object** inside `TenantProvider.tsx`
