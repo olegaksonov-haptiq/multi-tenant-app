@@ -21,11 +21,10 @@
  */
 export const getTenantIdFromHost = (): string => {
   const host = window.location.hostname;
-  const pathParts = window.location.pathname.split('/').filter(Boolean);
 
   // Localhost
   if (host === 'localhost') {
-    return pathParts[0] || 'default';
+    return 'default';
   }
 
   // Tenant-local subdomains: tenantlocal.drf.com → drf
@@ -36,6 +35,5 @@ export const getTenantIdFromHost = (): string => {
   // Normal subdomains
   const subdomain = host.split('.')[0]; // e.g., gemini-dev
   const cleanedSubdomain = subdomain.replace(/-(dev|stage)$/i, ''); // remove environment suffix
-
   return cleanedSubdomain;
 };
