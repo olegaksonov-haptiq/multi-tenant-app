@@ -9,7 +9,8 @@ const initialState: AuthStateType = {
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: true,
+  isInitializing: true,
+  isLoading: false,
   error: null,
 };
 
@@ -75,13 +76,15 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(initializeAuth.pending, (state) => {
-        state.isLoading = true;
+        state.isInitializing = true;
+        state.isLoading = false;
         state.error = null;
       })
       .addCase(initializeAuth.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = Boolean(action.payload.user);
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
@@ -89,10 +92,12 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(login.pending, (state) => {
+        state.isInitializing = false;
         state.isLoading = true;
         state.error = null;
       })
@@ -100,10 +105,12 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = action.payload ?? action.error.message ?? 'Login failed';
       })
@@ -111,6 +118,7 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       });

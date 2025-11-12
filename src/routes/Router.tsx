@@ -6,11 +6,11 @@ import { useAuth } from '../store/auth/hooks';
 import { useTenant } from '../store/tenant/hooks';
 
 const Router: React.FC = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isInitializing } = useAuth();
   const { loading: tenantLoading } = useTenant();
 
   // Show loading while checking auth and tenant
-  if (isLoading || tenantLoading) {
+  if (isInitializing || tenantLoading) {
     return (
       <div className="app-loading">
         <div className="loading-spinner">Loading...</div>

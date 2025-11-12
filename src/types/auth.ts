@@ -17,6 +17,7 @@ export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isInitializing: boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -33,6 +34,7 @@ export interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isInitializing: boolean;
   isLoading: boolean;
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
