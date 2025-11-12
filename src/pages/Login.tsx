@@ -6,10 +6,8 @@ import { useTenant } from '../store/tenant/hooks';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, error, isLoading } = useAuth();
   const { tenant } = useTenant();
   const location = useLocation();
 
@@ -21,16 +19,8 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
 
-    try {
-      await login({ email, password });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
-      setIsLoading(false);
-    }
+    await login({ email, password });
   };
 
   return (
@@ -50,7 +40,9 @@ const Login: React.FC = () => {
               type="email"
               id="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
               required
               disabled={isLoading}
             />
@@ -62,7 +54,9 @@ const Login: React.FC = () => {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
               required
               disabled={isLoading}
             />

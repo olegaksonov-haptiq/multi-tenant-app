@@ -44,6 +44,7 @@ export const useAuth = (): AuthContextType => {
       user: authState.user,
       token: authState.token,
       isAuthenticated: authState.isAuthenticated,
+      isInitializing: authState.isInitializing,
       isLoading: authState.isLoading,
       error: authState.error,
       login: loginUser,

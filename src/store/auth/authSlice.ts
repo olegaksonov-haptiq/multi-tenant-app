@@ -9,7 +9,8 @@ const initialState: AuthStateType = {
   user: null,
   token: null,
   isAuthenticated: false,
-  isLoading: true,
+  isInitializing: true,
+  isLoading: false,
   error: null,
 };
 
@@ -67,17 +68,23 @@ export const logout = createAsyncThunk<void, void, AuthThunkConfig>('auth/logout
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(initializeAuth.pending, (state) => {
-        state.isLoading = true;
+        state.isInitializing = true;
+        state.isLoading = false;
         state.error = null;
       })
       .addCase(initializeAuth.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = Boolean(action.payload.user);
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
@@ -85,10 +92,12 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(login.pending, (state) => {
+        state.isInitializing = false;
         state.isLoading = true;
         state.error = null;
       })
@@ -96,10 +105,12 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isAuthenticated = true;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = action.payload ?? action.error.message ?? 'Login failed';
       })
@@ -107,6 +118,7 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
+        state.isInitializing = false;
         state.isLoading = false;
         state.error = null;
       });
@@ -114,3 +126,4 @@ const authSlice = createSlice({
 });
 
 export const authReducer = authSlice.reducer;
+export const { clearError } = authSlice.actions;
