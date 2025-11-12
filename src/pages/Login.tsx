@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAppDispatch } from '../store/hooks';
 import { useAuth } from '../store/auth/hooks';
 import { useTenant } from '../store/tenant/hooks';
-import { clearError } from '../store/auth/authSlice';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useAppDispatch();
   const { login, isAuthenticated, error, isLoading } = useAuth();
   const { tenant } = useTenant();
   const location = useLocation();
@@ -22,7 +19,6 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(clearError());
 
     await login({ email, password });
   };
