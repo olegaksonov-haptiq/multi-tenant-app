@@ -13,5 +13,11 @@
   "layout": "navbar",
   "branding": {
     "logo": "/tenants/assets/venuplus.svg"
+  },
+  "apm": {
+    "active": false,
+    "serviceName": "multi-tenant-frontend-venu",
+    "environment": "prod",
+    "logLevel": "warn"
   }
 }

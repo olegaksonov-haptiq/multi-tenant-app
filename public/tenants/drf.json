@@ -13,5 +13,11 @@
   "layout": "both",
   "branding": {
     "logo": "/tenants/assets/drf.svg"
+  },
+  "apm": {
+    "active": true,
+    "serviceName": "multi-tenant-frontend-drf",
+    "environment": "prod",
+    "logLevel": "error"
   }
 }

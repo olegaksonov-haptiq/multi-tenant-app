@@ -1,3 +1,5 @@
+import type { TenantApmConfig } from './apm';
+
 export interface TenantConfig {
   id: string;
   displayName: string;
@@ -9,6 +11,7 @@ export interface TenantConfig {
     reportCharts: boolean;
   };
   footerText?: string;
+  apm?: TenantApmConfig;
 }
 
 export interface TenantState {
