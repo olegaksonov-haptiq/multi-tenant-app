@@ -8,6 +8,7 @@ import { useAppDispatch } from './store/hooks';
 import { useTenant } from './store/tenant/hooks';
 import { loadTenant } from './store/tenant/tenantSlice';
 import { applyTheme } from './utils/tenant/applyTheme';
+import { setupElasticApm } from './monitoring/elasticApm';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,6 +20,8 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
+    setupElasticApm(tenant);
+
     if (tenant?.theme) {
       applyTheme(tenant.theme);
     }

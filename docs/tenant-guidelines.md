@@ -147,6 +147,70 @@ export function applyTheme(theme: Record<string, string>) {
   - **Feature flag**: Boolean switch under `tenant.features` controlling UI or route availability.
   - **Guard**: Policy function returning a redirect or render override to enforce auth or tenant rules.
 
+## 10. Observability & Monitoring
+
+### 10.1 Elastic APM RUM Agent
+
+- The client bundle embeds Elastic RUM (`@elastic/apm-rum`). Base settings come from Vite env vars: `VITE_APM_SERVER_URL`, `VITE_APM_SERVICE_NAME`, `VITE_APM_ENV`, `VITE_APM_SERVICE_VERSION`, `VITE_APM_ACTIVE`, `VITE_APM_LOG_LEVEL`, `VITE_APM_TRANSACTION_SAMPLE_RATE`, and `VITE_APM_DISTRIBUTED_TRACING_ORIGINS`. Configure them in your hosting platform’s environment to point at the Elastic APM intake endpoint (Cloud or self-hosted).
+- Tenant manifests can override or disable telemetry per customer via the optional `apm` block (`active`, `serviceName`, `serverUrl`, `environment`, `logLevel`, `distributedTracingOrigins`). See the shipping examples in `public/tenants/*.json`.
+- Bootstrapping happens synchronously before React renders and re-evaluates once tenant data resolves:
+
+```1:36:src/monitoring/elasticApm.ts
+import { init as initApm } from '@elastic/apm-rum';
+// ... existing code ...
+export const setupElasticApm = (tenant?: TenantConfig) => {
+  const resolved = resolveApmConfig(tenant);
+  // ... existing code ...
+  apmInstance = initApm(rumConfig);
+  return apmInstance;
+};
+```
+
+```1:12:src/main.tsx
+import { setupElasticApm } from './monitoring/elasticApm';
+// ... existing code ...
+setupElasticApm();
+```
+
+```1:34:src/App.tsx
+import { setupElasticApm } from './monitoring/elasticApm';
+// ... existing code ...
+  useEffect(() => {
+    setupElasticApm(tenant);
+    // ... existing code ...
+  }, [tenant]);
+```
+
+- Distributed tracing headers are automatically attached by the APM agent; outgoing Axios requests gain explicit spans through the HTTP interceptors:
+
+```1:120:src/services/apiClient.ts
+  if (apm) {
+    const method = config.method?.toUpperCase() ?? 'GET';
+    const spanName = `${method} ${config.url ?? ''}`.trim();
+    const span = apm.startSpan(spanName, 'http', 'request');
+    // ... existing code ...
+  }
+```
+
+- Validation workflow:
+  1. Deploy with `active=true` (env var or tenant override) and confirm the APM server URL is reachable from browsers.
+  2. Load the app, switch routes, and trigger API calls; in Elastic Observability, you should see the new service (named per env/tenant overrides) under **APM → Services** with browser transactions and spans.
+  3. Tail `/var/log/app/frontend-errors.log` alongside APM dashboards to ensure correlation via shared `traceId`/`spanId` fields, then point Filebeat/Elastic Agent at the same path for ingestion.
+
+### 10.2 Frontend Crash Log Shipping
+
+- Hosting platforms must persist unhandled errors and fatal UI events to `/var/log/app/frontend-errors.log`. The front-end bundle surfaces structured error payloads; platform glue (for example, Nginx sidecars or container entrypoints) is responsible for writing them to disk.
+- Emit JSON Lines (`.jsonl`) entries with the following schema so Elastic Agent/Filebeat can forward without normalization:
+  - `@timestamp` (ISO-8601 UTC string)
+  - `level` (`error`, `warn`, or `info`)
+  - `tenantId` (slug resolved from host)
+  - `message` (human-readable summary)
+  - `traceId` and `spanId` when available from Elastic APM headers
+  - `context` (object for optional fields such as `route`, `userId`, or custom tags)
+- Keep log rotation and retention outside the React bundle. Configure the hosting layer to rotate at 50 MB or daily, retaining at least seven days to guarantee shipping agents catch up after outages.
+- Filebeat/Elastic Agent should tail the path verbatim and ship to Elastic APM/Logstash using the `logs-ui` pipeline. Include multiline handling disabled (one JSON object per line) and forward the same `tenantId` to support tenant-level dashboards.
+- If multi-container deployments are used, mount a shared volume at `/var/log/app` so that crash logs remain accessible to the shipping sidecar even when the front-end container restarts.
+
 ---
 
 ### Quick Reference Checklist

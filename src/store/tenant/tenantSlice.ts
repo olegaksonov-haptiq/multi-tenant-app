@@ -9,6 +9,11 @@ const FALLBACK_TENANT: TenantConfig = {
   displayName: 'Default Tenant',
   theme: { primary: '#19345E', secondary: '#FFFFFF' },
   features: { advancedReports: false, reportCharts: false },
+  apm: {
+    active: false,
+    environment: 'prod',
+    logLevel: 'error',
+  },
 };
 
 const fetchTenantConfig = async (tenantId: string): Promise<TenantConfig> => {

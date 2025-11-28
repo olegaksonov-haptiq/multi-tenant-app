@@ -13,5 +13,11 @@
   "layout": "navbar",
   "branding": {
     "logo": "/tenants/assets/haptiq.svg"
+  },
+  "apm": {
+    "active": true,
+    "serviceName": "multi-tenant-frontend-default",
+    "environment": "prod",
+    "logLevel": "error"
   }
 }
